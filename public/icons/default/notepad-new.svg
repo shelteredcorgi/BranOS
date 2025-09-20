@@ -1,0 +1,25 @@
+
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Document background -->
+  <rect x="6" y="3" width="19" height="25" fill="#ffffff" stroke="#bbb" stroke-width="1" rx="1"/>
+  
+  <!-- Spiral binding -->
+  <rect x="4" y="3" width="4" height="25" fill="#e8e8e8" rx="1"/>
+  <circle cx="6" cy="6" r="0.8" fill="#ccc"/>
+  <circle cx="6" cy="10" r="0.8" fill="#ccc"/>
+  <circle cx="6" cy="14" r="0.8" fill="#ccc"/>
+  <circle cx="6" cy="18" r="0.8" fill="#ccc"/>
+  <circle cx="6" cy="22" r="0.8" fill="#ccc"/>
+  <circle cx="6" cy="26" r="0.8" fill="#ccc"/>
+  
+  <!-- Text lines -->
+  <line x1="10" y1="8" x2="22" y2="8" stroke="#ddd" stroke-width="0.5"/>
+  <line x1="10" y1="11" x2="20" y2="11" stroke="#ddd" stroke-width="0.5"/>
+  <line x1="10" y1="14" x2="23" y2="14" stroke="#ddd" stroke-width="0.5"/>
+  <line x1="10" y1="17" x2="18" y2="17" stroke="#ddd" stroke-width="0.5"/>
+  
+  <!-- Pencil icon -->
+  <path d="M2 20 L6 16 L8 18 L4 22 Z" fill="#f39c12"/>
+  <path d="M6 16 L7 15 L9 17 L8 18 Z" fill="#e67e22"/>
+  <circle cx="7.5" cy="15.5" r="0.3" fill="#2c3e50"/>
+</svg>
