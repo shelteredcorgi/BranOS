@@ -153,6 +153,10 @@ Object.freeze(appRegistry);
 // Helper function to get app icon path
 export const getAppIconPath = (appId: AppId): string => {
   const app = appRegistry[appId];
+  if (!app) {
+    console.warn(`App with id "${appId}" not found in registry`);
+    return "/icons/generic.png"; // fallback icon
+  }
   if (typeof app.icon === "string") {
     return app.icon;
   }

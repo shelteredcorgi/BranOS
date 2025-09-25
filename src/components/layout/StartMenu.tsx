@@ -6,11 +6,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { AboutFinderDialog } from "@/components/dialogs/AboutFinderDialog";
 import { AnyApp } from "@/apps/base/types";
 import { AppId } from "@/config/appIds";
 import { ThemedIcon } from "@/components/shared/ThemedIcon";
+import { OsThemeId } from "@/themes/types";
 
 interface StartMenuProps {
   apps: AnyApp[];
@@ -21,6 +26,7 @@ export function StartMenu({ apps }: StartMenuProps) {
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
   const [aboutFinderOpen, setAboutFinderOpen] = useState(false);
   const currentTheme = useThemeStore((state) => state.current);
+  const setTheme = useThemeStore((state) => state.setTheme);
 
   const handleAppClick = (appId: string) => {
     // Debug logging for memes app
@@ -31,6 +37,18 @@ export function StartMenu({ apps }: StartMenuProps) {
     launchApp(appId as AppId);
     setIsStartMenuOpen(false);
   };
+
+  const handleThemeChange = (themeId: OsThemeId) => {
+    setTheme(themeId);
+    setIsStartMenuOpen(false);
+  };
+
+  const themeOptions = [
+    { id: "system7" as OsThemeId, name: "System 7" },
+    { id: "macosx" as OsThemeId, name: "Mac OS X" },
+    { id: "xp" as OsThemeId, name: "Windows XP" },
+    { id: "win98" as OsThemeId, name: "Windows 98" },
+  ];
 
   return (
     <>
@@ -195,6 +213,60 @@ export function StartMenu({ apps }: StartMenuProps) {
                   />
                   About This Computer
                 </DropdownMenuItem>
+
+                {/* Theme Switcher */}
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger
+                    className="h-8 px-3 flex items-center gap-2 hover:bg-blue-500 hover:text-white"
+                    style={{
+                      fontSize: "11px",
+                      color: "#000000",
+                      fontFamily: "var(--font-ms-sans)",
+                      imageRendering: "pixelated",
+                    }}
+                  >
+                    <ThemedIcon
+                      name="appearance.png"
+                      alt="Themes"
+                      className="w-6 h-6 [image-rendering:pixelated]"
+                    />
+                    Change Theme
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent
+                    className="p-0"
+                    style={{
+                      background:
+                        currentTheme === "xp" || currentTheme === "win98"
+                          ? "#ffffff"
+                          : "#c0c0c0",
+                      border:
+                        currentTheme === "xp"
+                          ? "1px solid #0855dd"
+                          : currentTheme === "win98"
+                          ? "1px outset #c0c0c0"
+                          : "1px outset #c0c0c0",
+                    }}
+                  >
+                    {themeOptions.map((theme) => (
+                      <DropdownMenuItem
+                        key={theme.id}
+                        onClick={() => handleThemeChange(theme.id)}
+                        className="h-8 px-3 flex items-center gap-2 hover:bg-blue-500 hover:text-white"
+                        style={{
+                          fontSize: "11px",
+                          color: "#000000",
+                          fontFamily: "var(--font-ms-sans)",
+                          imageRendering: "pixelated",
+                        }}
+                      >
+                        <span className="w-6 flex justify-center">
+                          {currentTheme === theme.id ? "●" : "○"}
+                        </span>
+                        {theme.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
 
                 {/* Separator */}
                 <div

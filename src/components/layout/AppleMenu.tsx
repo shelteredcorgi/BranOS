@@ -6,6 +6,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { AboutFinderDialog } from "@/components/dialogs/AboutFinderDialog";
 import { AnyApp } from "@/apps/base/types";
@@ -14,6 +17,7 @@ import { useLaunchApp } from "@/hooks/useLaunchApp";
 import { useThemeStore } from "@/stores/useThemeStore";
 import { cn } from "@/lib/utils";
 import { ThemedIcon } from "@/components/shared/ThemedIcon";
+import { OsThemeId } from "@/themes/types";
 
 interface AppleMenuProps {
   apps: AnyApp[];
@@ -23,12 +27,24 @@ export function AppleMenu({ apps }: AppleMenuProps) {
   const [aboutFinderOpen, setAboutFinderOpen] = useState(false);
   const launchApp = useLaunchApp();
   const currentTheme = useThemeStore((state) => state.current);
+  const setTheme = useThemeStore((state) => state.setTheme);
   const isMacOsxTheme = currentTheme === "macosx";
 
   const handleAppClick = (appId: string) => {
     // Simply launch the app - the instance system will handle focus if already open
     launchApp(appId as AppId);
   };
+
+  const handleThemeChange = (themeId: OsThemeId) => {
+    setTheme(themeId);
+  };
+
+  const themeOptions = [
+    { id: "system7" as OsThemeId, name: "System 7" },
+    { id: "macosx" as OsThemeId, name: "Mac OS X" },
+    { id: "xp" as OsThemeId, name: "Windows XP" },
+    { id: "win98" as OsThemeId, name: "Windows 98" },
+  ];
 
   return (
     <>
@@ -61,6 +77,33 @@ export function AppleMenu({ apps }: AppleMenuProps) {
           >
             About This Computer
           </DropdownMenuItem>
+
+          {/* Theme Switcher */}
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger className="text-md h-6 px-3 active:bg-gray-900 active:text-white flex items-center gap-2">
+              <ThemedIcon
+                name="appearance.png"
+                alt="Themes"
+                className="w-4 h-4 [image-rendering:pixelated]"
+              />
+              Change Theme
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent className="px-0">
+              {themeOptions.map((theme) => (
+                <DropdownMenuItem
+                  key={theme.id}
+                  onClick={() => handleThemeChange(theme.id)}
+                  className="text-md h-6 px-3 active:bg-gray-900 active:text-white flex items-center gap-2"
+                >
+                  <span className="w-4 flex justify-center">
+                    {currentTheme === theme.id ? "●" : "○"}
+                  </span>
+                  {theme.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+
           <DropdownMenuSeparator className="h-[2px] bg-black my-1" />
           {apps.map((app) => (
             <DropdownMenuItem

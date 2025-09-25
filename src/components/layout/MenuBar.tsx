@@ -655,8 +655,10 @@ export function MenuBar({ children, inWindowFrame = false }: MenuBarProps) {
                 const instance = instances[instanceId];
                 if (!instance || !instance.isOpen) return null;
 
-                const isForeground = instanceId === foregroundInstanceId;
-                const appIconPath = getAppIconPath(instance.appId);
+                // Skip instances for apps that don't exist in registry
+                try {
+                  const isForeground = instanceId === foregroundInstanceId;
+                  const appIconPath = getAppIconPath(instance.appId);
 
                 return (
                   <button
@@ -731,6 +733,10 @@ export function MenuBar({ children, inWindowFrame = false }: MenuBarProps) {
                     </span>
                   </button>
                 );
+                } catch (error) {
+                  console.error(`Error rendering taskbar button for app ${instance.appId}:`, error);
+                  return null;
+                }
               });
             })()}
 
@@ -807,23 +813,28 @@ export function MenuBar({ children, inWindowFrame = false }: MenuBarProps) {
                   {overflowTaskbarIds.map((instanceId) => {
                     const instance = instances[instanceId];
                     if (!instance || !instance.isOpen) return null;
-                    const appIconPath = getAppIconPath(instance.appId);
-                    return (
-                      <DropdownMenuItem
-                        key={instanceId}
-                        onClick={() => bringInstanceToForeground(instanceId)}
-                        className="text-md h-6 px-3 active:bg-gray-900 active:text-white flex items-center gap-2"
-                      >
-                        <ThemedIcon
-                          name={appIconPath}
-                          alt=""
-                          className="w-4 h-4 [image-rendering:pixelated]"
-                        />
-                        <span className="truncate text-xs">
-                          {instance.title || getAppName(instance.appId)}
-                        </span>
-                      </DropdownMenuItem>
-                    );
+                    try {
+                      const appIconPath = getAppIconPath(instance.appId);
+                      return (
+                        <DropdownMenuItem
+                          key={instanceId}
+                          onClick={() => bringInstanceToForeground(instanceId)}
+                          className="text-md h-6 px-3 active:bg-gray-900 active:text-white flex items-center gap-2"
+                        >
+                          <ThemedIcon
+                            name={appIconPath}
+                            alt=""
+                            className="w-4 h-4 [image-rendering:pixelated]"
+                          />
+                          <span className="truncate text-xs">
+                            {instance.title || getAppName(instance.appId)}
+                          </span>
+                        </DropdownMenuItem>
+                      );
+                    } catch (error) {
+                      console.error(`Error rendering overflow menu item for app ${instance.appId}:`, error);
+                      return null;
+                    }
                   })}
                 </DropdownMenuContent>
               </DropdownMenu>
