@@ -68,13 +68,6 @@ VCR-inspired YouTube playlist manager for research and inspiration. Because some
 
 ---
 
-## 🎮 **Try It Live**
-
-**[Live Demo →](your-demo-url)**
-*Works on desktop, tablet, and mobile*
-
----
-
 ## 🔧 **Quick Start**
 
 ```bash
